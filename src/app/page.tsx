@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
+  const [advocates, setAdvocates] = useState<Advocate[]>([]);
   const [searchValue, setSearchValue] = useState("");
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+  const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
 
   useEffect(() => {
     console.log("fetching advocates...");
@@ -25,6 +25,7 @@ export default function Home() {
         advocate.city.includes(searchValue) ||
         advocate.degree.includes(searchValue) ||
         advocate.specialties.includes(searchValue) ||
+        advocate.phoneNumber.toString().includes(searchValue) ||
         advocate.yearsOfExperience.toString().includes(searchValue)
       );
     });
@@ -74,29 +75,31 @@ export default function Home() {
       <br />
       <table>
         <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>City</th>
+            <th>Degree</th>
+            <th>Specialties</th>
+            <th>Years of Experience</th>
+            <th>Phone Number</th>
+          </tr>
         </thead>
         <tbody>
-          {filteredAdvocates.map((advocate) => {
+          {filteredAdvocates.map((advocate, key) => {
             return (
-              <tr>
+              <tr key={key}>
                 <td>{advocate.firstName}</td>
                 <td>{advocate.lastName}</td>
                 <td>{advocate.city}</td>
                 <td>{advocate.degree}</td>
                 <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{s}</div>
+                  {advocate.specialties.map((s, s_key) => (
+                    <div key={s_key}>{s}</div>
                   ))}
                 </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
+                <td>{advocate.yearsOfExperience.toString()}</td>
+                <td>{advocate.phoneNumber.toString()}</td>
               </tr>
             );
           })}
